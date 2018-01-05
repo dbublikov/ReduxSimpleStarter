@@ -1,2 +1,2 @@
 # ReduxSimpleStarter
-Course by S.Grider
+Course by S.Grider with two sections complited
