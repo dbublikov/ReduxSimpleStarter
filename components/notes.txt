@@ -1,0 +1,133 @@
+
+componet is a function or an object that returns some amount of HTML
+component name is a component class, but using inside of JSX trasits it into component INSTANCE
+
+In our case we are passing the class, but we need to pass the INSTANCE
+ReactDOM.render(<App />);
+
+Make reference to DOM by passing 2nd atribute "document.querySelector('.container')"
+Render component into that div container
+
+// Setting up serach_bar:
+1. exporting modules
+2. classes
+3. state
+
+2. function component -> class based component (JSES6 object with properties and method to it)
+
+const SearchBar = () => {
+  return <input />;
+};
+
+
+class SearchBar extends React.Component {
+  render() {
+    return <input />;
+  }
+}
+
+instead of: const Component = React.Component; 
+(import React and pull off the property Component as a variable)
+
+using: import React, {Component} from 'react'; // Syntactic sugar
+
+
+return <input onChange={this.onInputChange} />;
+Create a new input element and pass it property 'onChange'(event name = React prop) with a value {this.onInputChange}
+create event handler and pass it to element, we want to launch for the event.
+
+onInputChange(event) {
+
+  }
+
+'event' object describes info about the event occured. In our case - the value of the input
+
+class SearchBar extends Component {
+  render() {
+    return <input onChange={this.onInputChange} />;
+  }
+
+  onInputChange(event) {
+    console.log(event.target.value);
+  }
+}
+
+3. State is a plain JS object (exist on every class based component) used to record in React user events. Whenever state is changed the render function of component will be rerendered.
+
+this.setState({ term: event.target.value }) - used to change state outside of constructor
+
+      <div>
+        <input onChange={event => this.setState({ term: event.target.value })} />
+        Value of the input: {this.state.term} // referencing value of state!!!
+      </div
+
+
+Schema so far: whenever input changes it causes the state to be updated. 
+Input tells the state what it schould be.
+Lets update input to get its value from the state
+
+this.setState causes component to rerender. 
+And value of new input is set to new value of this.state.term
+
+When user types sth he (didn't change input value) only trigered the event. 
+Bacause we update the state with this event we causes the value of input to change
+
+// AJAX Request with React
+
+Youtube Search Response: 1st arg - some configuration options, 2nd - callback function
+
+YTSearch({key: API_KEY, term: 'surfboards'}, function(data) {
+  console.log(data);
+})
+
+1. Whenever App boots up, we get the instance App on the screen
+2. The constructor will run right away (because we make a new instance of App). And it will immediately kick off the search
+
+	this.setState({ videos: videos }); in ES6 -> this.setState({ videos });
+
+defining the property on JSX tag (passing data like this refers to passing props 'videos'):	
+<VideoList videos={this.state.videos} /> 
+
+prop arrives as arg to VideoList function
+const videos = props.videos; 
+
+const VideoListItem = (props) => {  
+  const video = props.video;
+...
+}
+
+in ES6 -> 
+
+const VideoListItem = ({video}) => {
+...
+};
+
+
+// Detail component
+
+const url = 'https://www.youtube.com/embed/' + videoId;
+
+in ES6 -> 
+
+const url = `https://www.youtube.com/embed/${videoId}`;
+
+Issue: some parent object can't fetch info fast enought to satisfy the needs of a child object 
+
+
+// Video Selection
+
+We define a function, which takes some video and defines it on App's state (update state with the new video). If VideoList calls this function the selectedVideo is going to update.
+If you want to pull off multiple propertiers of prop's object: 
+
+const VideoListItem = ({video, onVideoSelect}) => {...
+
+
+// Searching for videos
+
+Wenn <SearchBar> calls onSearchTermChange, it will do so with 'term' (string) 
+and send into this.videoSearch(term) -> that is where 'term' popes up
+then youtube: videoSearch(term) (refactoring youtube search into its own method)
+
+// Throttling search term input
+
+What _.debounce does, it takes inner function and returns a new function, that only be called once in 300ms
